@@ -44,6 +44,7 @@ def write_single_paper(
     image_model_name: str = "gemini-3-pro-image-preview",
     research_cutoff: str = "2024-11",
     plotting_max_critic_rounds: int = 3,
+    run_final_checks_enabled: bool = True,
 ):
     latex_writeup_dir = osp.join(base_dir, "latex_writeup")
     pdf_file = osp.join(base_dir, "final_paper.pdf")
@@ -250,6 +251,16 @@ def write_single_paper(
             )
             shutil.copy(content_refinment_agent_output_pdf_path, final_pdf_path)
             print(" >> Final PDF saved to:\n", final_pdf_path)
+
+            if run_final_checks_enabled:
+                from methods.final_checks import run_final_checks
+
+                run_final_checks(
+                    base_dir=base_dir,
+                    final_pdf_path=final_pdf_path,
+                    refined_pdf_path=content_refinment_agent_output_pdf_path,
+                    model_name=reflection_model_name,
+                )
 
             succeed = True
             return True

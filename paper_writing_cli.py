@@ -87,6 +87,13 @@ def main():
         help="Maximum rounds of self-correction in the plotting agent.",
     )
 
+    parser.add_argument(
+        "--run_final_checks",
+        type=lambda x: (str(x).lower() in ["true", "1", "yes"]),
+        default=True,
+        help="Verify references and run a standalone final review after generation.",
+    )
+
     args = parser.parse_args()
 
     if args.research_cutoff is None:
@@ -153,6 +160,7 @@ def main():
             image_model_name=args.image_model_name,
             research_cutoff=args.research_cutoff,
             plotting_max_critic_rounds=args.plotting_max_critic_rounds,
+            run_final_checks_enabled=args.run_final_checks,
         )
     else:
         from methods.paper_writer import write_single_paper
@@ -169,6 +177,7 @@ def main():
             writer_model_name=args.writer_model_name,
             reflection_model_name=args.reflection_model_name,
             research_cutoff=args.research_cutoff,
+            run_final_checks_enabled=args.run_final_checks,
         )
 
 
